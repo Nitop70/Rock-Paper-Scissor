@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Space-Themed Rock, Paper, Scissors</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to bottom, #001f3f, #011627);
+        color: white;
+        text-align: center;
+        overflow-x: hidden;
+      }
+
+      h1 {
+        margin-top: 20px;
+        font-size: 3em;
+        color: #00d9ff;
+        text-shadow: 0 0 10px #00d9ff;
+      }
+
+      .container {
+        margin-top: 50px;
+      }
+
+      .choices {
+        display: flex;
+        justify-content: center;
+        margin: 20px 0;
+      }
+
+      .choice {
+        margin: 0 15px;
+        cursor: pointer;
+        transition: transform 0.3s;
+      }
+
+      .choice:hover {
+        transform: scale(1.2);
+      }
+
+      .choice img {
+        width: 100px;
+        height: 100px;
+      }
+
+      .score-board {
+        margin: 30px 0;
+        font-size: 1.5em;
+        border: 2px solid #00d9ff;
+        border-radius: 10px;
+        padding: 20px;
+        display: inline-block;
+        box-shadow: 0 0 20px #00d9ff;
+      }
+
+      .results {
+        font-size: 1.8em;
+        margin: 20px 0;
+      }
+
+      .space-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background: url("https://www.nasa.gov/sites/default/files/thumbnails/image/potw2131a.jpg")
+          no-repeat center center/cover;
+        opacity: 0.1;
+      }
+
+      .planet {
+        position: absolute;
+        bottom: -150px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 400px;
+        height: 400px;
+        background: url("https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg")
+          no-repeat center center/cover;
+        border-radius: 50%;
+        box-shadow: 0 0 40px #00d9ff;
+        animation: float 5s infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateX(-50%) translateY(0);
+        }
+        50% {
+          transform: translateX(-50%) translateY(-20px);
+        }
+      }
+
+      .game-stats {
+        margin: 20px 0;
+      }
+
+      button {
+        padding: 10px 20px;
+        font-size: 1.2em;
+        background: #00d9ff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      button:hover {
+        background: #0077ff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="space-bg"></div>
+    <h1>Rock, Paper, Scissors - Space Adventure</h1>
+    <div class="container">
+      <div class="score-board">
+        <p>Player Score: <span id="player-score">0</span></p>
+        <p>Computer Score: <span id="computer-score">0</span></p>
+      </div>
+      <div class="results" id="result">Make your move!</div>
+
+      <div class="choices">
+        <div class="choice" id="rock">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/e/e2/Rock_icon.png"
+            alt="Rock"
+          />
+          <p>🪨 Rock</p>
+        </div>
+        <div class="choice" id="paper">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Paper_icon.png"
+            alt="Paper"
+          />
+          <p>📄 Paper</p>
+        </div>
+        <div class="choice" id="scissors">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/7/74/Scissors_icon.png"
+            alt="Scissors"
+          />
+          <p>✂️ Scissors</p>
+        </div>
+      </div>
+
+      <div class="game-stats">
+        <button onclick="resetGame()">Reset Game</button>
+      </div>
+    </div>
+
+    <div class="planet"></div>
+
+    <script>
+      let playerScore = 0;
+      let computerScore = 0;
+
+      const choices = ["rock", "paper", "scissors"];
+
+      const resultElement = document.getElementById("result");
+      const playerScoreElement = document.getElementById("player-score");
+      const computerScoreElement = document.getElementById("computer-score");
+
+      function getComputerChoice() {
+        return choices[Math.floor(Math.random() * choices.length)];
+      }
+
+      function playGame(playerChoice) {
+        const computerChoice = getComputerChoice();
+
+        if (playerChoice === computerChoice) {
+          resultElement.textContent = `It's a draw! Both chose ${playerChoice}`;
+        } else if (
+          (playerChoice === "rock" && computerChoice === "scissors") ||
+          (playerChoice === "scissors" && computerChoice === "paper") ||
+          (playerChoice === "paper" && computerChoice === "rock")
+        ) {
+          resultElement.textContent = `You win! ${playerChoice} beats ${computerChoice}`;
+          playerScore++;
+          playerScoreElement.textContent = playerScore;
+        } else {
+          resultElement.textContent = `You lose! ${computerChoice} beats ${playerChoice}`;
+          computerScore++;
+          computerScoreElement.textContent = computerScore;
+        }
+      }
+
+      document
+        .getElementById("rock")
+        .addEventListener("click", () => playGame("rock"));
+      document
+        .getElementById("paper")
+        .addEventListener("click", () => playGame("paper"));
+      document
+        .getElementById("scissors")
+        .addEventListener("click", () => playGame("scissors"));
+
+      function resetGame() {
+        playerScore = 0;
+        computerScore = 0;
+        playerScoreElement.textContent = playerScore;
+        computerScoreElement.textContent = computerScore;
+        resultElement.textContent = "Make your move!";
+      }
+    </script>
+  </body>
+</html>
